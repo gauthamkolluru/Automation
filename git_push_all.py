@@ -12,7 +12,11 @@ class GitPullPush:
 
     def git_pull(self):
         try:
+            print('Automation')
+            subprocess.run(['git', 'pull'], cwd=os.path.join(
+                os.path.expanduser('~'), 'Automation'), shell=True)
             for directory in self.dir_list:
+                print(directory)
                 subprocess.run(['git', 'pull'], cwd=os.path.join(
                     self.root_dir, directory), shell=True)
         except Exception as er:
@@ -22,6 +26,7 @@ class GitPullPush:
     def git_push(self):
         try:
             for directory in self.dir_list:
+                print(directory)
                 subprocess.run(['git', 'pull'], cwd=os.path.join(
                     self.root_dir, directory), shell=True)
                 subprocess.run(['git', 'add', '.'], cwd=os.path.join(
@@ -38,13 +43,36 @@ class GitPullPush:
         except Exception as er:
             return repr(er)
         return True
+    
+    def git_push_automation_folder(self):
+        try:
+            print('Automation')
+            subprocess.run(['git', 'pull'], cwd=os.path.join(
+                os.path.expanduser('~'), 'Automation'), shell=True)
+            subprocess.run(['git', 'add', '.'], cwd=os.path.join(
+                os.path.expanduser('~'), 'Automation'), shell=True)
+            git_status = subprocess.run(['git', 'status'], cwd=os.path.join(
+                os.path.expanduser('~'), 'Automation'), shell=True, capture_output=True)
+            if self.nothing_to_commit not in git_status.stdout:
+                print(git_status.stdout)
+                self.commit_message = input("Enter Commit Message: ")
+                subprocess.run(['git', 'commit', '-m', self.commit_message], cwd=os.path.join(
+                os.path.expanduser('~'), 'Automation'), shell=True)
+                subprocess.run(['git', 'push'], cwd=os.path.join(
+                os.path.expanduser('~'), 'Automation'), shell=True, capture_output=True)
+        except Exception as er:
+            return repr(er)
+        return True
 
 
 if __name__ == "__main__":
     git_obj = GitPullPush()
     pull_status = git_obj.git_pull()
-    if not pull_status:
+    if pull_status != True:
         print(pull_status)
     push_status = git_obj.git_push()
-    if not push_status:
+    if push_status != True:
         print(push_status)
+    automation_folder_push_status = git_obj.git_push_automation_folder()
+    if automation_folder_push_status != True:
+        print(automation_folder_push_status)
