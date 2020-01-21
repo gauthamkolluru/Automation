@@ -1,0 +1,1 @@
+python C:\Users\sakollur\Automation\auto_git_push.pyw
