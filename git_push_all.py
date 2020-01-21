@@ -39,7 +39,6 @@ class GitPullPush:
                     self.set_root_dir(), directory), shell=True, capture_output=True)
                 git_push_result = subprocess.run(['git', 'push'], cwd=os.path.join(
                     self.set_root_dir(), directory), shell=True, capture_output=True)
-            break
         return git_push_result.stdout
 
 
