@@ -11,30 +11,40 @@ class GitPullPush:
             os.path.join(os.path.join(self.root_dir, directory), '.git'))]
 
     def git_pull(self):
-        for directory in self.dir_list:
-            subprocess.run(['git', 'pull'], cwd=os.path.join(
-                self.root_dir, directory), shell=True)
-        return "ok"
+        try:
+            for directory in self.dir_list:
+                subprocess.run(['git', 'pull'], cwd=os.path.join(
+                    self.root_dir, directory), shell=True)
+        except Exception as er:
+            return repr(er)
+        return True
 
     def git_push(self):
-        for directory in self.dir_list:
-            subprocess.run(['git', 'pull'], cwd=os.path.join(
-                self.root_dir, directory), shell=True)
-            subprocess.run(['git', 'add', '.'], cwd=os.path.join(
-                self.root_dir, directory), shell=True)
-            git_status = subprocess.run(['git', 'status'], cwd=os.path.join(
-                self.root_dir, directory), shell=True, capture_output=True)
-            if self.nothing_to_commit not in git_status.stdout:
-                print(git_status.stdout)
-                self.commit_message = input("Enter Commit Message: ")
-                subprocess.run(['git', 'commit', '-m', self.commit_message], cwd=os.path.join(
+        try:
+            for directory in self.dir_list:
+                subprocess.run(['git', 'pull'], cwd=os.path.join(
                     self.root_dir, directory), shell=True)
-                git_push_result = subprocess.run(['git', 'push'], cwd=os.path.join(
+                subprocess.run(['git', 'add', '.'], cwd=os.path.join(
+                    self.root_dir, directory), shell=True)
+                git_status = subprocess.run(['git', 'status'], cwd=os.path.join(
                     self.root_dir, directory), shell=True, capture_output=True)
-        return git_push_result.stdout
+                if self.nothing_to_commit not in git_status.stdout:
+                    print(git_status.stdout)
+                    self.commit_message = input("Enter Commit Message: ")
+                    subprocess.run(['git', 'commit', '-m', self.commit_message], cwd=os.path.join(
+                        self.root_dir, directory), shell=True)
+                    subprocess.run(['git', 'push'], cwd=os.path.join(
+                        self.root_dir, directory), shell=True, capture_output=True)
+        except Exception as er:
+            return repr(er)
+        return True
 
 
 if __name__ == "__main__":
     git_obj = GitPullPush()
-    # git_obj.git_pull()
-    git_obj.git_push()
+    pull_status = git_obj.git_pull()
+    if not pull_status:
+        print(pull_status)
+    push_status = git_obj.git_push()
+    if not push_status:
+        print(push_status)
