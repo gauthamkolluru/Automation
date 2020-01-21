@@ -33,6 +33,7 @@ class GitPullPush:
             git_status = subprocess.run(['git', 'status'], cwd=os.path.join(
                 self.set_root_dir(), directory), shell=True, capture_output=True)
             if self.nothing_to_commit not in git_status.stdout:
+                print(git_status.stdout)
                 self.commit_message = input("Enter Commit Message: ")
                 subprocess.run(['git', 'commit', '-m', self.commit_message], cwd=os.path.join(
                     self.set_root_dir(), directory), shell=True, capture_output=True)
