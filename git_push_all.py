@@ -8,9 +8,7 @@ class GitPullPush:
         self.nothing_to_commit = b"On branch master\nYour branch is up to date with 'origin/master'.\n\nnothing to commit, working tree clean\n"
 
     def set_root_dir(self):
-        if sys.platform == 'win32':
-            return f'C:\\Users\\{os.environ["USERNAME"]}\\Documents'
-        return f'/home/{os.environ["USER"]}/Documents/'
+        return os.path.join(os.path.expanduser('~'), 'Documents')
 
     def find_local_repos(self):
         self.root_dir = self.set_root_dir()
@@ -26,7 +24,6 @@ class GitPullPush:
 
     def git_push(self):
         self.dir_list = self.find_local_repos()
-        # self.git_pull()
         for directory in self.dir_list:
             subprocess.run(['git', 'pull'], cwd=os.path.join(
                 self.set_root_dir(), directory), shell=True)
