@@ -9,28 +9,32 @@ class GitPullPush:
             return f'C:\\Users\\{os.environ["USERNAME"]}\\Documents'
         return f'/home/{os.environ["USER"]}/Documents/'
 
-
     def find_local_repos(self):
         self.root_dir = self.set_root_dir()
         return [directory for directory in os.listdir(self.root_dir) if os.path.exists(
             os.path.join(os.path.join(self.root_dir, directory), '.git'))]
 
-    def git_pull_all(self):
+    def git_pull(self):
         self.dir_list = self.find_local_repos()
         for directory in self.dir_list:
-            subprocess.run(['git','pull'], cwd=os.path.join(self.set_root_dir(), directory), shell=True)
+            subprocess.run(['git', 'pull'], cwd=os.path.join(
+                self.set_root_dir(), directory), shell=True)
         return "ok"
 
-    def find_modified_repos(self):
+    def git_push(self):
         self.dir_list = self.find_local_repos()
+        self.git_pull()
         for directory in self.dir_list:
-            for content in os.listdir(os.path.join(self.set_root_dir(),directory)):
-                print(content)
+            subprocess.run(['git', 'add', '.'], cwd=os.path.join(
+                self.set_root_dir(), directory), shell=True, capture_output=True)
+            a_var = subprocess.run(['git', 'status'], cwd=os.path.join(
+                self.set_root_dir(), directory), shell=True, capture_output=True)
             break
-        return ""
+        return a_var
 
 
 if __name__ == "__main__":
     git_obj = GitPullPush()
-    # git_obj.git_pull_all()
-    git_obj.find_modified_repos()
+    # git_obj.git_pull()
+    avar = git_obj.git_push()
+    print(avar)
