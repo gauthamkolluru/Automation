@@ -43,7 +43,7 @@ class GitPullPush:
         except Exception as er:
             return repr(er)
         return True
-    
+
     def git_push_automation_folder(self):
         try:
             print('Automation')
@@ -57,9 +57,9 @@ class GitPullPush:
                 print(git_status.stdout)
                 self.commit_message = input("Enter Commit Message: ")
                 subprocess.run(['git', 'commit', '-m', self.commit_message], cwd=os.path.join(
-                os.path.expanduser('~'), 'Automation'), shell=True)
+                    os.path.expanduser('~'), 'Automation'), shell=True)
                 subprocess.run(['git', 'push'], cwd=os.path.join(
-                os.path.expanduser('~'), 'Automation'), shell=True, capture_output=True)
+                    os.path.expanduser('~'), 'Automation'), shell=True, capture_output=True)
         except Exception as er:
             return repr(er)
         return True
