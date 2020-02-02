@@ -73,7 +73,7 @@ if __name__ == "__main__":
         print(pull_status)
     push_status = git_obj.git_push()
     if push_status != True:
-        print(push_status)
+        print(push_status, '+++++++++++++')
     # automation_folder_push_status = git_obj.git_push_automation_folder()
     # if automation_folder_push_status != True:
     #     print(automation_folder_push_status)
