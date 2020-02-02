@@ -6,15 +6,16 @@ import subprocess
 class GitPullPush:
     def __init__(self):
         self.nothing_to_commit = b"On branch master\nYour branch is up to date with 'origin/master'.\n\nnothing to commit, working tree clean\n"
-        self.root_dir = os.path.join(os.path.expanduser('~'), 'Documents')
+        self.root_dir = os.path.join(os.path.expanduser('~'), 'Documents/CodingLabs')
+        # self.root_dir = os.path.join(os.path.expanduser('~'), 'Documents')
         self.dir_list = [directory for directory in os.listdir(self.root_dir) if os.path.exists(
             os.path.join(os.path.join(self.root_dir, directory), '.git'))]
 
     def git_pull(self):
         try:
             print('Automation')
-            subprocess.run(['git', 'pull'], cwd=os.path.join(
-                os.path.expanduser('~'), 'Automation'), shell=True)
+            # subprocess.run(['git', 'pull'], cwd=os.path.join(
+            #     os.path.expanduser('~'), 'Automation'), shell=True)
             for directory in self.dir_list:
                 print(directory)
                 subprocess.run(['git', 'pull'], cwd=os.path.join(
@@ -73,6 +74,6 @@ if __name__ == "__main__":
     push_status = git_obj.git_push()
     if push_status != True:
         print(push_status)
-    automation_folder_push_status = git_obj.git_push_automation_folder()
-    if automation_folder_push_status != True:
-        print(automation_folder_push_status)
+    # automation_folder_push_status = git_obj.git_push_automation_folder()
+    # if automation_folder_push_status != True:
+    #     print(automation_folder_push_status)
