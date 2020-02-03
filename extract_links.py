@@ -33,6 +33,6 @@ def extract_links(root, links_file):
 
 
 if __name__ == '__main__':
-    root = os.path.expanduser('~\Documents\\task_keeper')
+    root = os.path.expanduser('~\\Documents\\task_keeper')
     links_file = 'links_list.json'
     extract_links(root, links_file)
