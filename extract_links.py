@@ -2,6 +2,11 @@ import os
 import json
 import glob
 
+OFFICIAL = ['cisco', 'salesforce', 'sso', 'smartsheet',
+            'journeys', 'automation', 'dsx', 'rtb']
+
+# [constraint for constraint in OFFICIAL if constraint in word.lower()]
+
 
 def read_json(file_path):
     if os.path.exists(file_path):
@@ -25,7 +30,8 @@ def extract_links(root, links_file):
         if 'http' in content_list:
             for word in [word for word in content_list.split() if 'http' in word]:
                 if word not in links_dict['cisco'] + links_dict['personal']:
-                    if 'cisco' in word.lower() or 'smartsheet' in word.lower():
+                    # if 'cisco' in word.lower() or 'smartsheet' in word.lower() or 'salesforce' in word.lower():
+                    if any([constraint for constraint in OFFICIAL if constraint in word.lower()]):
                         links_dict['cisco'].append(word)
                     else:
                         links_dict['personal'].append(word)
