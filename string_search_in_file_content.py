@@ -2,13 +2,14 @@ import os
 import sys
 import subprocess
 
-FILE_FORMATS = ('md', 'docx', 'xlsx', 'txt')
+DIRECTORIES = ('Desktop', 'Documents', 'Downloads')
+FILE_TYPES = ('md', 'docx', 'xlsx', 'txt')
 
 
 # take the 'Search Directory' as 'CWD' by default if current user's 'Home' is in the path
 
 def search_path_list():
-    return [os.path.join(os.path.expanduser('~'), directory) for directory in os.listdir(os.path.expanduser('~')) if directory in ('Desktop', 'Documents', 'Downloads')]
+    return [os.path.join(os.path.expanduser('~'), directory) for directory in os.listdir(os.path.expanduser('~')) if directory in DIRECTORIES]
 
 
 def search_string_func():
@@ -22,7 +23,7 @@ def find_files():
         for root, directories, files in os.walk(search_path):
             for f in files:
                 file_name = os.path.join(root, f)
-                if file_name.split('.')[-1] in FILE_FORMATS:
+                if file_name.split('.')[-1] in FILE_TYPES:
                     try:
                         with open(file_name, 'r') as fn:
                             if search_string.lower() in fn.read().lower():
