@@ -1,2 +1,13 @@
 **/*.pyc
 __pycache__/*
+
+*.json
+/*.json
+*/*.json
+**/*.json
+
+*.pickle
+/*.pickle
+*/*.pickle
+**/*.pickle
+
