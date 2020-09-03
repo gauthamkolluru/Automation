@@ -18,7 +18,9 @@ TOKEN = 'token.pickle'
 
 USER_ID = 'me'
 
-DIRECTORY_TO_STORE = "C:\\Users\\sakollur\\Downloads"
+LABELS = 'INBOX'
+
+DIRECTORY_TO_STORE = "C:\\Users\\sakollur\\Documents\\pdfs\\"
 
 
 def get_creds(creds=None):
@@ -45,12 +47,8 @@ def get_creds(creds=None):
 
 
 def get_service():
+
     return build('gmail', 'v1', credentials=get_creds()).users()
-
-
-def get_mail_string():
-
-    return ''
 
 
 def get_messages_or_threads(view='', mail_id="", attach_id="") -> str:
@@ -63,23 +61,27 @@ def get_messages_or_threads(view='', mail_id="", attach_id="") -> str:
 
             attach_string = ".attachments().get(userId='{0}', messageId='{1}', id='{2}')".format(
                 USER_ID, mail_id, attach_id)
+
             return mail_string + attach_string + exe_string
 
         item_String = ".get(userId='{0}', id='{1}')".format(
             USER_ID, mail_id)
+
         return mail_string + item_String + exe_string
 
-    list_string = ".list(userId='{1}'){2}.get('{0}', [])".format(
-        view, USER_ID, exe_string)
+    list_string = ".list(userId='{1}', labelIds='{3}'){2}.get('{0}', [])".format(
+        view, USER_ID, exe_string, LABELS)
+
     return mail_string + list_string
 
 
-def get_message(as_message=True):
+def get_attachments(as_message=True):
     attachment_id = 'attachmentId'
 
     for each_mail in eval(get_messages_or_threads(view=MESSAGE_VIEW[as_message])):
 
         mail_id = each_mail['id']
+
         each_mail = eval(get_messages_or_threads(
             view=MESSAGE_VIEW[as_message], mail_id=mail_id))
 
@@ -91,26 +93,33 @@ def get_message(as_message=True):
 
                     attachment = eval(get_messages_or_threads(
                         view=MESSAGE_VIEW[as_message], mail_id=mail_id, attach_id=part['body'][attachment_id]))
+
                     data = attachment['data']
                     file_data = base64.urlsafe_b64decode(data.encode('UTF-8'))
 
                     if part['filename'] and part['filename'].endswith('.pdf'):
+
                         file_path = os.path.join(
                             DIRECTORY_TO_STORE, part['filename'])
 
                         if not os.path.exists(file_path):
+
                             with open(file_path, 'wb') as fp:
                                 fp.write(file_data)
+
                         else:
+
                             print("All new attachments downloaded!")
-                            exit(0)
+                            return True
 
     return True
 
 
 def main():
-    return get_message()
+
+    return get_attachments()
 
 
 if __name__ == "__main__":
-    print(main())
+
+    main()
