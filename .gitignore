@@ -11,3 +11,7 @@ __pycache__/*
 */*.pickle
 **/*.pickle
 
+rough.py
+*/rough.py
+**/rough.py
+
