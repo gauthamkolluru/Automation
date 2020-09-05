@@ -108,9 +108,11 @@ def get_attachments(as_message=True):
 
                             with open(file_path, 'wb') as fp:
                                 fp.write(file_data)
+                            # print(file_path, "downloaded")
 
                         else:
-
+                            # print(file_path, "existing")
+                            # continue
                             print("All new attachments downloaded!")
                             return True
 
