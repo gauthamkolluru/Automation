@@ -2,6 +2,8 @@ import os
 import base64
 import pickle
 
+from file_utils import *
+
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -20,7 +22,7 @@ USER_ID = 'me'
 
 LABELS = 'INBOX'
 
-DIRECTORY_TO_STORE = "C:\\Users\\sakollur\\Documents\\pdfs\\"
+DIRECTORY_TO_STORE = read_json()[0]
 
 
 def get_creds(creds=None):

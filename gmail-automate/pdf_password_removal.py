@@ -1,21 +1,12 @@
 import os
-import json
+from file_utils import *
 
-import subprocess
-
-
-FILE_NAME = "pdf_passwords.json"
+import PyPDF4 as pp4
 
 
-def read_json(file_name: str, data=dict()) -> (str, list):
+root_dir, PASSWORDS = read_json()
 
-    with open(file_name) as fn:
-        data = json.load(fn)
-
-    return data['root_dir'], data['passwords']
-
-
-root_dir, PASSWORDS = read_json(FILE_NAME)
+BREAK_POINT = {0: "Password Removed", 2: "Password Not Exist"}
 
 
 def get_files(directory=root_dir) -> str:
@@ -32,9 +23,16 @@ def get_password() -> str:
         yield v
 
 
-def subprocess_args(file_name: str, password: str) -> list:
+def read_pdf(file_name: str):
+    return pp4.PdfFileReader(file_name)
 
-    return ['qpdf', "--decrypt", "--password={}".format(password), "--replace-input", file_name]
+
+def write_pdf(file_name: str, read_pdf_obj: str):
+    writer = pp4.PdfFileWriter()
+    writer.appendPagesFromReader(read_pdf_obj)
+    with open(file_name, "wb") as fp:
+        writer.write(fp)
+    return file_name
 
 
 def pdf_rm_pwd() -> bool:
@@ -45,11 +43,14 @@ def pdf_rm_pwd() -> bool:
 
             for password in get_password():
 
-                output = subprocess.run(subprocess_args(
-                    f, password), capture_output=True)
+                read_obj = read_pdf(f)
 
-                if not output.returncode:
-                    break
+                if read_obj.isEncrypted:
+
+                    if read_obj.decrypt(password) == 1:
+
+                        print(write_pdf(file_name=f, read_pdf_obj=read_obj))
+
     return True
 
 
