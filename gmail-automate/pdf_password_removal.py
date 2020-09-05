@@ -6,8 +6,6 @@ import PyPDF4 as pp4
 
 root_dir, PASSWORDS = read_json()
 
-BREAK_POINT = {0: "Password Removed", 2: "Password Not Exist"}
-
 
 def get_files(directory=root_dir) -> str:
 
@@ -30,8 +28,10 @@ def read_pdf(file_name: str):
 def write_pdf(file_name: str, read_pdf_obj: str):
     writer = pp4.PdfFileWriter()
     writer.appendPagesFromReader(read_pdf_obj)
+
     with open(file_name, "wb") as fp:
         writer.write(fp)
+
     return file_name
 
 
@@ -50,6 +50,7 @@ def pdf_rm_pwd() -> bool:
                     if read_obj.decrypt(password) == 1:
 
                         print(write_pdf(file_name=f, read_pdf_obj=read_obj))
+                        break
 
     return True
 
