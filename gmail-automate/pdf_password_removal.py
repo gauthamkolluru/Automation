@@ -41,11 +41,11 @@ def pdf_rm_pwd() -> bool:
 
         if f.endswith(".pdf"):
 
-            for password in get_password():
+            read_obj = read_pdf(f)
 
-                read_obj = read_pdf(f)
+            if read_obj.isEncrypted:
 
-                if read_obj.isEncrypted:
+                for password in get_password():
 
                     if read_obj.decrypt(password) == 1:
 
