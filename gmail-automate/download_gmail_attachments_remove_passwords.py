@@ -5,12 +5,10 @@ import pdf_password_removal as ppr
 
 def main():
     try:
-        if pad.main():
-            ret_val = ppr.main()
+        return pad.main() and ppr.main()
     except Exception as e:
         print(e)
         return False
-    return ret_val
 
 
 if __name__ == '__main__':
